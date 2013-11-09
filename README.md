@@ -1,4 +1,5 @@
 #dcom-angular-dialog
+[doodeec.com](http://doodeec.com)
 
 ##Description
 This is dialog module for angular, which uses Bootstrap 3 modals and custom backdrop.
@@ -39,7 +40,7 @@ It supports closing dialog with ESC key, or with Backdrop click event
 
 ###Credits
 
-Thanks to @capaj for the initial idea.
+Thanks to [capaj](http://github.com/capaj) for the initial idea.
 
 
 ###Licence
