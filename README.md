@@ -2,8 +2,9 @@
 [doodeec.com](http://doodeec.com)
 
 ##Description
-This is dialog module for angular, which uses Bootstrap 3 modals and custom backdrop.
-dialogService allows you to create dialog
+This is a dialog module for angular, which uses Bootstrap 3 modals and the custom backdrop.
+It creates `dialogService` in your app.
+dialogService allows you to create dialog:
 
     dialogService.create(templateName, className, customCtrl, persistent);
 
@@ -18,23 +19,28 @@ and call different methods:
     dialog.dismiss()
     dialog.destroy()
 
-or register custom callStack on these events:
+or register a custom callStack on these events:
 
 - open
 - ready
 - dismiss
 - destroy
 
-It supports closing dialog with ESC key, or with Backdrop click event
+It supports closing the dialog with ESC key, or with Backdrop click event
+
+###Usage
+Include dcomDialog.js and dcomDialog.css, and in the app module definition put `dcomDialog` as a required module
+
+    angular.module('myApp', ['dcomDialog'])...
 
 ###Parameters
     
     - templateName
-        name of the html template defined for custom modal
+        name of html template defined for the modal
     - className
-        CSS class of modal
+        CSS class of the root dialog element
     - customCtrl
-        function or object that define modal controller
+        function or object that define the modal controller
     - persistent
         boolean value, defines if .close() method hides modal or removes it completely from DOM
 
