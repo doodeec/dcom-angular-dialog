@@ -17,32 +17,6 @@ module.exports = function (grunt) {
 
   grunt.initConfig({
     yeoman: yeomanConfig,
-    clean: {
-      dist: {
-        files: [{
-          dot: true,
-          src: [
-            '.tmp',
-            '<%= yeoman.dist %>/*',
-            '!<%= yeoman.dist %>/.git*'
-          ]
-        }]
-      },
-      server: '.tmp'
-    },
-    rev: {
-      dist: {
-        files: {
-          src: [
-            '<%= yeoman.dist %>/scripts/{,*/}*.js',
-            '<%= yeoman.dist %>/styles/{,*/}*.css',
-            '<%= yeoman.dist %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}',
-            '<%= yeoman.dist %>/styles/fonts/*'
-          ]
-        }
-      }
-    },
-    // Put files not handled in other tasks here
     copy: {
       dist: {
         files: [{
@@ -63,26 +37,12 @@ module.exports = function (grunt) {
     }
   });
 
-  grunt.registerTask('test', [
-    'clean:server'
-  ]);
-
-  grunt.registerTask('build', [
-    'clean:dist',
-    'concat',
-    'copy:dist',
-    'cdnify',
-    'ngmin',
-    'uglify',
-    'rev'
-  ]);
-
   grunt.registerTask('minify', [
     'uglify',
     'copy'
   ]);
 
   grunt.registerTask('default', [
-    'build'
+    'minify'
   ]);
 };
