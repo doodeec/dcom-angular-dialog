@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('angularDialogApp', [])
+angular.module('angularDialogApp', ['dcomDialog'])
   .config(function ($routeProvider) {
     $routeProvider
       .when('/', {

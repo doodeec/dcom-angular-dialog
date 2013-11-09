@@ -1,4 +1,6 @@
-angular.module('angularDialogApp')
+'use strict';
+
+angular.module('dcomDialog', [])
     .service('dialogService',
         ['$q','$http','$templateCache','$document', '$timeout',
             function dialogService($q, $http, $templateCache, $document, $timeout) {
@@ -33,14 +35,14 @@ angular.module('angularDialogApp')
                     this._originalTemplate = '../templates/' +template+ '.html';
 
                     if (angular.isObject(ctrl)) {
-                        function ctrlFn($scope){
+                        var ctrlFn = function($scope){
                             for (var prop in ctrl){
                                 $scope[prop] = ctrl[prop];
                             }
 
                             ctrlFn.$inject = ['$scope'];
                             this.$scope = $scope;
-                        }
+                        };
                         this.controller = ctrlFn;
                     } else if (angular.isFunction(ctrl)) {
                         this.controller = ctrl;
