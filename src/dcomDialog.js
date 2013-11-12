@@ -6,7 +6,7 @@ angular.module('dcomDialog', [])
             function dialogService($q, $http, $templateCache, $document, $timeout) {
 
                 var dialogCount = 0;
-                var defaultTemplate = 'templates/mp_gen_notif.html';
+                var defaultTemplate = 'templates/default.html';
                 var allDialogs = [];
                 var openedDialogs = [];
 
