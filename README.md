@@ -36,7 +36,7 @@ Include dcomDialog.js and dcomDialog.css, and in the app module definition put `
 ###Parameters
     
     - templateName
-        name of html template defined for the modal
+        name of html template defined for the modal, will be searched in templates folder by default (relative path)
     - className
         CSS class of the root dialog element
     - customCtrl
