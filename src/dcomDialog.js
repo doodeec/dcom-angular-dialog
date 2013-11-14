@@ -21,6 +21,7 @@ angular.module('dcomDialog', [])
                     var that = this;
                     $timeout(function(){
                         that.callStackArray('destroy');
+                        that._ready = false;
                         allDialogs.splice(allDialogs.indexOf(that),1);
                     });
                 }
@@ -100,8 +101,11 @@ angular.module('dcomDialog', [])
                             that.callStackArray('open');
                         };
 
-                        //if dialog is ready, open Modal, else register onReady stack
-                        if (!this._ready || openedDialogs.indexOf(this.id) !== -1) {
+                        if (allDialogs.indexOf(this) === -1) {
+                            openDefer.reject();
+                            console.warn('Dialog does not exist');
+                        } else if (!this._ready || openedDialogs.indexOf(this.id) !== -1) {
+                            //if dialog is ready, open Modal, else register onReady stack
                             this.on('ready', openFunction);
                         } else {
                             openFunction();
@@ -114,6 +118,7 @@ angular.module('dcomDialog', [])
 
                         var dismissDefer = $q.defer(),
                             index = openedDialogs.indexOf(this.id);
+
                         if (!this._ready || (index === -1)) {
                             dismissDefer.reject();
                         } else {
