@@ -11,7 +11,7 @@ angular.module('angularDialogApp')
             };
 
             $scope.twoDialogs = function() {
-                var firstDialog = dialogService.create('info','info');
+                var firstDialog = dialogService.create('info','info', null, false, true);
                 firstDialog.open();
                 var secondDialog = dialogService.create('error','error');
                 secondDialog.open();

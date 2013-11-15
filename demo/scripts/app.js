@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('angularDialogApp', ['dcomDialog'])
-  .config(function ($routeProvider) {
+  .config(function ($routeProvider, $locationProvider) {
     $routeProvider
       .when('/', {
         templateUrl: 'views/main.html',
@@ -10,4 +10,6 @@ angular.module('angularDialogApp', ['dcomDialog'])
       .otherwise({
         redirectTo: '/'
       });
+
+    $locationProvider.html5Mode(true);
   });

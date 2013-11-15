@@ -26,7 +26,7 @@ angular.module('dcomDialog', [])
                     });
                 }
 
-                var Dialog = function(template, className, ctrl, persistent) {
+                var dcomDialog = function(template, className, ctrl, persistent, backdropDisabled) {
                     if (!template) return;
 
                     count++;
@@ -38,6 +38,7 @@ angular.module('dcomDialog', [])
                     this.className = className;
                     this.controller = null;
                     this._persistent = persistent || false;
+                    this._backdropDisabled = backdropDisabled || false;
                     this._ready = false;
                     this._loadDirective = $q.defer();
                     this._originalTemplate = 'templates/' +template+ '.html';
@@ -71,7 +72,7 @@ angular.module('dcomDialog', [])
                     }, function loadTmpError() { console.error("Template not specified") });
                 };
 
-                Dialog.prototype = {
+                dcomDialog.prototype = {
                     loadTemplate: function() {
                         this.deferLoad = $q.defer();
 
@@ -149,15 +150,22 @@ angular.module('dcomDialog', [])
 
                         for (var j=0, jMax=arr.length; j<jMax; j++) { arr[j].call(this) }
                     },
-                    close: function() {
-                        this._persistent ? this.dismiss() : this.destroy();
+                    close: function(e) {
+                        this._persistent ? this.dismiss(e) : this.destroy();
+                    },
+                    backdropClick: function(e) {
+                        e && e.preventDefault();
+
+                        if (!this._backdropDisabled) this.close();
                     }
                 };
 
 
 
                 return {
-                    create: function(template, className, ctrl, persistent) { return new Dialog(template, className, ctrl, persistent) },
+                    create: function(template, className, ctrl, persistent, backdropEnable) {
+                        return new dcomDialog(template, className, ctrl, persistent, backdropEnable)
+                    },
                     get: function(name) { return getDialog('name', name) },
                     getById: function(id) { return getDialog('id', id) },
                     allDialogs: function() { return allDialogs },
@@ -219,7 +227,7 @@ angular.module('dcomDialog', [])
 
                         //bind backdrop click event to dismiss function of the topmostDialog
                         elem.on('click', function(e) {
-                            scope.$apply(function() { dialogService.getById(scope.openedDialogs()[0]).close(e) });
+                            scope.$apply(function() { dialogService.getById(scope.openedDialogs()[0]).backdropClick(e) });
                         });
                     }
                 }
