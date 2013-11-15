@@ -189,7 +189,7 @@ angular.module('dcomDialog', [])
 
                             scope.$apply(function(){
                                 e.keyCode == 27 && topDialog &&
-                                    dialogService.getById(topDialog).dismiss(e) &&
+                                    dialogService.getById(topDialog).close(e) &&
                                 e.preventDefault();
                             });
                         });
