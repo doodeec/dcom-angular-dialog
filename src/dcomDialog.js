@@ -20,9 +20,12 @@ angular.module('dcomDialog', [])
                 function destroyDialog() {
                     var that = this;
                     $timeout(function(){
-                        that.callStackArray('destroy');
-                        that._ready = false;
-                        allDialogs.splice(allDialogs.indexOf(that),1);
+                        var thatIndex = allDialogs.indexOf(that);
+                        if (thatIndex != -1) {
+                            that.callStackArray('destroy');
+                            that._ready = false;
+                            allDialogs.splice(thatIndex,1);
+                        }
                     });
                 }
 
