@@ -44,6 +44,8 @@ Include dcomDialog.js and dcomDialog.css, and in the app module definition put `
         function or object that define the modal controller
     - persistent
         boolean value, defines if .close() method hides modal or removes it completely from DOM
+    - backdropDisable
+        disables closing of dialog on backdrop click
 
 ###Credits
 
