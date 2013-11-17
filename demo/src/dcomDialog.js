@@ -29,7 +29,7 @@ angular.module('dcomDialog', [])
                     });
                 }
 
-                var dcomDialog = function(template, className, ctrl, persistent, backdropDisabled) {
+                var DcomDialog = function(template, options) {
                     if (!template) return;
 
                     count++;
@@ -38,23 +38,29 @@ angular.module('dcomDialog', [])
                     this.id = count;
                     this.name = template;
                     this.template = null;
-                    this.className = className;
                     this.controller = null;
-                    this._persistent = persistent || false;
-                    this._backdropDisabled = backdropDisabled || false;
+                    this.className = null;
+                    this._persistent = false;
+                    this._backdropDisabled = false;
                     this._ready = false;
                     this._loadDirective = $q.defer();
                     this._originalTemplate = 'templates/' +template+ '.html';
 
-                    if (angular.isObject(ctrl)) {
-                        var ctrlFn = function($scope){
-                            for (var prop in ctrl){ $scope[prop] = ctrl[prop] }
-                            ctrlFn.$inject = ['$scope'];
-                            this.$scope = $scope;
-                        };
-                        this.controller = ctrlFn;
-                    } else if (angular.isFunction(ctrl)) {
-                        this.controller = ctrl;
+                    if (options && angular.isObject(options)) {
+                        this.className = options.className;
+                        this._persistent = options.persistent;
+                        this._backdropDisabled = options.backdrop === false;
+
+                        if (angular.isObject(options.controller)) {
+                            var ctrlFn = function($scope){
+                                for (var prop in options.controller){ $scope[prop] = options.controller[prop] }
+                                ctrlFn.$inject = ['$scope'];
+                                this.$scope = $scope;
+                            };
+                            this.controller = ctrlFn;
+                        } else if (angular.isFunction(options.controller)) {
+                            this.controller = options.controller;
+                        }
                     }
 
                     this._callStack = {
@@ -75,7 +81,7 @@ angular.module('dcomDialog', [])
                     }, function loadTmpError() { console.error("Template not specified") });
                 };
 
-                dcomDialog.prototype = {
+                DcomDialog.prototype = {
                     loadTemplate: function() {
                         this.deferLoad = $q.defer();
 
@@ -166,8 +172,8 @@ angular.module('dcomDialog', [])
 
 
                 return {
-                    create: function(template, className, ctrl, persistent, backdropEnable) {
-                        return new dcomDialog(template, className, ctrl, persistent, backdropEnable)
+                    create: function(template, options) {
+                        return new DcomDialog(template, options)
                     },
                     get: function(name) { return getDialog('name', name) },
                     getById: function(id) { return getDialog('id', id) },

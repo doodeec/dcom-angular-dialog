@@ -6,24 +6,33 @@ angular.module('angularDialogApp')
         function ($scope, dialogService) {
 
             $scope.oneDialog = function() {
-                var dialog = dialogService.create('error','error');
+                var dialog = dialogService.create('error');
                 dialog.open();
             };
 
             $scope.twoDialogs = function() {
-                var firstDialog = dialogService.create('info','info', null, false, true);
+                var firstDialogOptions = {
+                    className: 'info',
+                    backdrop: false
+                };
+                var firstDialog = dialogService.create('info',firstDialogOptions);
                 firstDialog.open();
-                var secondDialog = dialogService.create('error','error');
+                var secondDialog = dialogService.create('error');
                 secondDialog.open();
             };
 
             $scope.ctrlDialog = function() {
-                var dialog = dialogService.create('ctrl','ctrl', {
-                    message: "This is dialog message injected from code",
-                    magicButton: function() {
-                        this.message = "Whoa, message has changed";
+                var options = {
+                    className: 'ctrlDialog',
+                    controller: {
+                        message: "This is dialog message injected from code",
+                        magicButton: function() {
+                            this.message = "Whoa, message has changed";
+                        }
                     }
-                });
+                };
+
+                var dialog = dialogService.create('ctrl',options);
                 dialog.open();
             };
   }]);
