@@ -38,6 +38,7 @@ It supports closing the dialog with ESC key, or with Backdrop click event. Closi
 disabled by setting parameter `backdrop` to false in method `.create()`.
 
 ###Usage
+Include Bootstrap 3 `modal.js` file
 Include dcomDialog.js and dcomDialog.css, and in the app module definition put `dcomDialog` as a required module
 
     angular.module('myApp', ['dcomDialog'])...
