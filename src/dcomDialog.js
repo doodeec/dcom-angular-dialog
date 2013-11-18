@@ -158,7 +158,9 @@ angular.module('dcomDialog', [])
                     on: function(event, fn) {
                         if (!fn || !event || !angular.isFunction(fn)) return;
 
-                        if (event in this._callStack) this._callStack[event].push(fn);
+                        if (event in this._callStack) {
+                            if (this._callStack[event].indexOf(fn) === -1) this._callStack[event].push(fn);
+                        }
                     },
                     callStackArray: function(stack) {
                         var arr = this._callStack[stack] || [];
