@@ -102,7 +102,8 @@ angular.module('dcomDialog', [])
                         e && e.preventDefault();
 
                         var openDefer = $q.defer(),
-                            that = this;
+                            that = this,
+                            openedIndex = openedDialogs.indexOf(this.id);
 
                         var openFunction = function() {
                             that.show();
@@ -114,9 +115,14 @@ angular.module('dcomDialog', [])
                         if (allDialogs.indexOf(this) === -1) {
                             openDefer.reject();
                             console.warn('Dialog does not exist');
-                        } else if (!this._ready || openedDialogs.indexOf(this.id) !== -1) {
+                        } else if (!this._ready) {
                             //if dialog is ready, open Modal, else register onReady stack
                             this.on('ready', openFunction);
+                        } else if (openedIndex !== -1) {
+                            if (openedIndex !== 0) {
+                                openedDialogs.splice(openedIndex,1);
+                                openedDialogs.unshift(this.id);
+                            }
                         } else {
                             openFunction();
                         }
