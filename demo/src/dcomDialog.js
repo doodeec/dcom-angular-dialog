@@ -133,15 +133,20 @@ angular.module('dcomDialog', [])
                         e && e.preventDefault();
 
                         var dismissDefer = $q.defer(),
-                            index = openedDialogs.indexOf(this.id);
+                            index = openedDialogs.indexOf(this.id),
+                            that = this;
 
                         if (!this._ready || (index === -1)) {
                             dismissDefer.reject();
                         } else {
                             this.hide();
-                            openedDialogs.splice(index,1);
-                            this.callStackArray('dismiss');
-                            dismissDefer.resolve();
+                            // because of bootstrap's detecting of transitions, timeout is needed to prevent
+                            // disabling scrollbar on body
+                            $timeout(function() {
+                                openedDialogs.splice(index,1);
+                                that.callStackArray('dismiss');
+                                dismissDefer.resolve();
+                            },200);
                         }
 
                         return dismissDefer.promise;
