@@ -56,9 +56,10 @@ angular.module('dcomDialog', [])
                         if (angular.isObject(options.controller)) {
                             var ctrlFn = function($scope){
                                 for (var prop in options.controller){ $scope[prop] = options.controller[prop] }
-                                ctrlFn.$inject = ['$scope'];
-                                this.$scope = $scope;
+
+                                dialog.$scope = $scope;
                             };
+                            ctrlFn.$inject = ['$scope'];
                             this.controller = ctrlFn;
                         } else if (angular.isFunction(options.controller)) {
                             this.controller = options.controller;
