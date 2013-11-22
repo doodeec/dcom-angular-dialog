@@ -19,6 +19,8 @@ angular.module('dcomDialog', [])
 
                 function destroyDialog() {
                     var that = this;
+                    // because of bootstrap's detecting of transitions, timeout is needed to prevent
+                    // disabling scrollbar on body
                     $timeout(function(){
                         var thatIndex = allDialogs.indexOf(that);
                         if (thatIndex != -1) {
@@ -26,7 +28,7 @@ angular.module('dcomDialog', [])
                             that._ready = false;
                             allDialogs.splice(thatIndex,1);
                         }
-                    });
+                    },200);
                 }
 
                 var DcomDialog = function(template, options) {
@@ -140,13 +142,9 @@ angular.module('dcomDialog', [])
                             dismissDefer.reject();
                         } else {
                             this.hide();
-                            // because of bootstrap's detecting of transitions, timeout is needed to prevent
-                            // disabling scrollbar on body
-                            $timeout(function() {
-                                openedDialogs.splice(index,1);
-                                that.callStackArray('dismiss');
-                                dismissDefer.resolve();
-                            },200);
+                            openedDialogs.splice(index,1);
+                            this.callStackArray('dismiss');
+                            dismissDefer.resolve();
                         }
 
                         return dismissDefer.promise;
