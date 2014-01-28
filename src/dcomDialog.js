@@ -84,101 +84,106 @@ angular.module('dcomDialog', [])
                     }, function loadTmpError() { console.error("Template not specified") });
                 };
 
-                DcomDialog.prototype = {
-                    loadTemplate: function() {
-                        this.deferLoad = $q.defer();
+                DcomDialog.prototype.loadTemplate = function() {
+                    this.deferLoad = $q.defer();
 
-                        if (this._ready) {
-                            this.deferLoad.resolve(this.template);
-                        } else if (this._originalTemplate) {
-                            var that = this;
-
-                            $http.get(this._originalTemplate, {cache: $templateCache})
-                                .success(function() { that.deferLoad.resolve(that._originalTemplate) })
-                                .error(function() { that.deferLoad.resolve(defaultTemplate) });
-                        } else {
-                            this.deferLoad.reject();
-                        }
-                        return this.deferLoad.promise;
-                    },
-                    open: function(e) {
-                        e && e.preventDefault();
-
-                        var openDefer = $q.defer(),
-                            that = this,
-                            openedIndex = openedDialogs.indexOf(this.id);
-
-                        var openFunction = function() {
-                            that.show();
-                            openedDialogs.unshift(that.id);
-                            openDefer.resolve();
-                            that.callStackArray('open');
-                        };
-
-                        if (allDialogs.indexOf(this) === -1) {
-                            openDefer.reject();
-                            console.warn('Dialog does not exist');
-                        } else if (!this._ready) {
-                            //if dialog is ready, open Modal, else register onReady stack
-                            this.on('ready', openFunction);
-                        } else if (openedIndex !== -1) {
-                            if (openedIndex !== 0) {
-                                openedDialogs.splice(openedIndex,1);
-                                openedDialogs.unshift(this.id);
-                            }
-                        } else {
-                            openFunction();
-                        }
-
-                        return openDefer.promise;
-                    },
-                    dismiss: function(e) {
-                        e && e.preventDefault();
-
-                        var dismissDefer = $q.defer(),
-                            index = openedDialogs.indexOf(this.id),
-                            that = this;
-
-                        if (!this._ready || (index === -1)) {
-                            dismissDefer.reject();
-                        } else {
-                            this.hide();
-                            openedDialogs.splice(index,1);
-                            this.callStackArray('dismiss');
-                            dismissDefer.resolve();
-                        }
-
-                        return dismissDefer.promise;
-                    },
-                    destroy: function() {
+                    if (this._ready) {
+                        this.deferLoad.resolve(this.template);
+                    } else if (this._originalTemplate) {
                         var that = this;
 
-                        this.dismiss().then(function() {
-                            destroyDialog.call(that);
-                        }, function() {
-                            destroyDialog.call(that);
-                        });
-                    },
-                    on: function(event, fn) {
-                        if (!fn || !event || !angular.isFunction(fn)) return;
-
-                        if (event in this._callStack) {
-                            if (this._callStack[event].indexOf(fn) === -1) this._callStack[event].push(fn);
-                        }
-                    },
-                    callStackArray: function(stack) {
-                        var arr = this._callStack[stack] || [];
-
-                        for (var j=0, jMax=arr.length; j<jMax; j++) { arr[j].call(this) }
-                    },
-                    close: function(e) {
-                        this._persistent ? this.dismiss(e) : this.destroy();
-                    },
-                    backdropClick: function(e) {
-                        e && e.preventDefault();
-
-                        if (!this._backdropDisabled) this.close();
+                        $http.get(this._originalTemplate, {cache: $templateCache})
+                            .success(function() { that.deferLoad.resolve(that._originalTemplate) })
+                            .error(function() { that.deferLoad.resolve(defaultTemplate) });
+                    } else {
+                        this.deferLoad.reject();
                     }
+                    return this.deferLoad.promise;
+                };
+
+                DcomDialog.prototype.open = function(e) {
+                    e && e.preventDefault();
+
+                    var openDefer = $q.defer(),
+                        that = this,
+                        openedIndex = openedDialogs.indexOf(this.id);
+
+                    var openFunction = function() {
+                        that.show();
+                        openedDialogs.unshift(that.id);
+                        openDefer.resolve();
+                        that.callStackArray('open');
+                    };
+
+                    if (allDialogs.indexOf(this) === -1) {
+                        openDefer.reject();
+                        console.warn('Dialog does not exist');
+                    } else if (!this._ready) {
+                        //if dialog is ready, open Modal, else register onReady stack
+                        this.on('ready', openFunction);
+                    } else if (openedIndex !== -1) {
+                        if (openedIndex !== 0) {
+                            openedDialogs.splice(openedIndex,1);
+                            openedDialogs.unshift(this.id);
+                        }
+                    } else {
+                        openFunction();
+                    }
+
+                    return openDefer.promise;
+                };
+
+                DcomDialog.prototype.dismiss = function(e) {
+                    e && e.preventDefault();
+
+                    var dismissDefer = $q.defer(),
+                        index = openedDialogs.indexOf(this.id),
+                        that = this;
+
+                    if (!this._ready || (index === -1)) {
+                        dismissDefer.reject();
+                    } else {
+                        this.hide();
+                        openedDialogs.splice(index,1);
+                        this.callStackArray('dismiss');
+                        dismissDefer.resolve();
+                    }
+
+                    return dismissDefer.promise;
+                };
+
+                DcomDialog.prototype.destroy = function() {
+                    var that = this;
+
+                    this.dismiss().then(function() {
+                        destroyDialog.call(that);
+                    }, function() {
+                        destroyDialog.call(that);
+                    });
+                };
+
+                DcomDialog.prototype.on = function(event, fn) {
+                    if (!fn || !event || !angular.isFunction(fn)) return;
+
+                    if (event in this._callStack) {
+                        if (this._callStack[event].indexOf(fn) === -1) this._callStack[event].push(fn);
+                    }
+                };
+
+                DcomDialog.prototype.callStackArray = function(stack) {
+                    var arr = this._callStack[stack] || [];
+
+                    for (var j=0, jMax=arr.length; j<jMax; j++) { arr[j].call(this) }
+                };
+
+                DcomDialog.prototype.close = function(e) {
+                    this._persistent ? this.dismiss(e) : this.destroy();
+                };
+
+                DcomDialog.prototype.backdropClick = function(e) {
+                    e && e.preventDefault();
+
+                    if (!this._backdropDisabled) this.close();
                 };
 
 
