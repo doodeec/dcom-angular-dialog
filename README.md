@@ -35,6 +35,7 @@ or register a custom callStack on these events:
 - dismiss
 - destroy
 
+
     dialog.on('open', function() {/* callback */})
 
 Closing the modal with ESC key, or with Backdrop click event are both supported. Closing with Backdrop click can be
