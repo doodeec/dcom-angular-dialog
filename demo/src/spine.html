@@ -1,8 +1,8 @@
 <div class="modal-layer">
     <div class="modal fade {{dialog.className}}" aria-hidden="true" tabindex="-1"
-         ng-repeat="dialog in allDialogs()" id="{{dialog.name}}"
-         ng-class="{topmostDialog: dialog.id == openedDialogs()[0]}"
-         dcom-dialog="{{dialog.id}}">
+         ng-repeat="dialog in allModals" id="{{dialog.name}}"
+         ng-class="{topmostDialog: dialog.id == openedModals[0]}"
+         dc-modal="{{dialog.id}}">
 
         <div class="modal-dialog" ng-switch on="dialog.controller">
             <div ng-switch-when="null">
@@ -15,5 +15,5 @@
 
     </div>
 
-    <div dcom-dialog-backdrop></div>
+    <div dc-backdrop></div>
 </div>

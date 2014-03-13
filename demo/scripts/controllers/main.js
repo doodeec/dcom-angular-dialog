@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('angularDialogApp')
+angular.module('angularModalDemo')
   .controller('MainCtrl',
     ['$scope','dialogService',
         function ($scope, dialogService) {

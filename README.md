@@ -2,7 +2,7 @@
 [doodeec.com](http://doodeec.com)
 
 ##Version
-0.1.0
+0.2.0
 
 ##Description
 This is a dialog module for angular, which uses Bootstrap 3 modals and the custom backdrop.
@@ -69,3 +69,9 @@ Thanks to [capaj](http://github.com/capaj) for the initial idea.
 ###Licence
 Released under MIT licence.
 Feel free to contribute or use.
+
+###Support
+If you encounter any problems using this module, contact me via [doodeec.com](http://doodeec.com) or [send me an email](mailto:doodeec@gmail.com)
+
+###Future
+Plan is to get rid of Bootstrap and jQuery completely

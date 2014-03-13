@@ -1,18 +1,17 @@
 'use strict';
 
-angular.module('dcomDialog', [])
+angular.module('dcModal', [])
     .service('dialogService',
-        ['$q','$http','$templateCache','$document', '$timeout',
-            function dialogProvider($q, $http, $templateCache, $document, $timeout) {
-
-                var count = 0;
-                var defaultTemplate = 'templates/default.html';
-                var allDialogs = [];
-                var openedDialogs = [];
+        ['$q','$http','$templateCache', '$timeout',
+            function dialogProvider($q, $http, $templateCache, $timeout) {
+                var count = 0,
+                    defaultTemplate = 'templates/default.html',
+                    allModals = [],
+                    openedModals = [];
 
                 function getDialog(prop, value) {
-                    for (var i=0, iMax=allDialogs.length; i < iMax; i++) {
-                        if (allDialogs[i][prop] == value) return allDialogs[i];
+                    for (var i=0, iMax=allModals.length; i < iMax; i++) {
+                        if (allModals[i][prop] == value) return allModals[i];
                     }
                     return null;
                 }
@@ -22,15 +21,21 @@ angular.module('dcomDialog', [])
                     // because of bootstrap's detecting of transitions, timeout is needed to prevent
                     // disabling scrollbar on body
                     $timeout(function(){
-                        var thatIndex = allDialogs.indexOf(that);
+                        var thatIndex = allModals.indexOf(that);
                         if (thatIndex != -1) {
                             that.callStackArray('destroy');
                             that._ready = false;
-                            allDialogs.splice(thatIndex,1);
+                            allModals.splice(thatIndex,1);
                         }
                     },200);
                 }
 
+                /**
+                 * Modal constructor
+                 * @param template
+                 * @param options
+                 * @constructor
+                 */
                 var DcomDialog = function(template, options) {
                     if (!template) return;
 
@@ -73,7 +78,7 @@ angular.module('dcomDialog', [])
                         open: []
                     };
 
-                    allDialogs.push(this);
+                    allModals.push(this);
 
                     this.loadTemplate().then(function loadTmpSuccess(template) {
                         dialog.template = template;
@@ -81,9 +86,14 @@ angular.module('dcomDialog', [])
                             dialog._ready = true;
                             dialog.callStackArray('ready');
                         });
-                    }, function loadTmpError() { console.error("Template not specified") });
+                    }).catch(function loadTmpError(error) { throw new Error(error) });
                 };
 
+                /**
+                 * Loads specified template
+                 * (loads default template if an error occures during template loading)
+                 * @returns {promise}
+                 */
                 DcomDialog.prototype.loadTemplate = function() {
                     this.deferLoad = $q.defer();
 
@@ -101,30 +111,35 @@ angular.module('dcomDialog', [])
                     return this.deferLoad.promise;
                 };
 
+                /**
+                 * Opens the modal, or registers opening in 'onload' call stack
+                 * @param {event} e
+                 * @returns {promise}
+                 */
                 DcomDialog.prototype.open = function(e) {
                     e && e.preventDefault();
 
                     var openDefer = $q.defer(),
                         that = this,
-                        openedIndex = openedDialogs.indexOf(this.id);
+                        openedIndex = openedModals.indexOf(this.id);
 
                     var openFunction = function() {
                         that.show();
-                        openedDialogs.unshift(that.id);
+                        openedModals.unshift(that.id);
                         openDefer.resolve();
                         that.callStackArray('open');
                     };
 
-                    if (allDialogs.indexOf(this) === -1) {
+                    if (allModals.indexOf(this) === -1) {
                         openDefer.reject();
-                        console.warn('Dialog does not exist');
+                        throw new Error('Dialog does not exist');
                     } else if (!this._ready) {
                         //if dialog is ready, open Modal, else register onReady stack
                         this.on('ready', openFunction);
                     } else if (openedIndex !== -1) {
                         if (openedIndex !== 0) {
-                            openedDialogs.splice(openedIndex,1);
-                            openedDialogs.unshift(this.id);
+                            openedModals.splice(openedIndex,1);
+                            openedModals.unshift(this.id);
                         }
                     } else {
                         openFunction();
@@ -133,18 +148,22 @@ angular.module('dcomDialog', [])
                     return openDefer.promise;
                 };
 
+                /**
+                 * Closes the modal, but keeps it in the DOM
+                 * @param {event} e
+                 * @returns {promise}
+                 */
                 DcomDialog.prototype.dismiss = function(e) {
                     e && e.preventDefault();
 
                     var dismissDefer = $q.defer(),
-                        index = openedDialogs.indexOf(this.id),
-                        that = this;
+                        index = openedModals.indexOf(this.id);
 
                     if (!this._ready || (index === -1)) {
                         dismissDefer.reject();
                     } else {
                         this.hide();
-                        openedDialogs.splice(index,1);
+                        openedModals.splice(index,1);
                         this.callStackArray('dismiss');
                         dismissDefer.resolve();
                     }
@@ -152,16 +171,24 @@ angular.module('dcomDialog', [])
                     return dismissDefer.promise;
                 };
 
+                /**
+                 * Destroys modal - removes element from the DOM
+                 */
                 DcomDialog.prototype.destroy = function() {
                     var that = this;
 
                     this.dismiss().then(function() {
                         destroyDialog.call(that);
-                    }, function() {
+                    }).catch(function() {
                         destroyDialog.call(that);
                     });
                 };
 
+                /**
+                 * Registers stack to be called after some event
+                 * @param {string} event - event name
+                 * @param {function} fn
+                 */
                 DcomDialog.prototype.on = function(event, fn) {
                     if (!fn || !event || !angular.isFunction(fn)) return;
 
@@ -170,59 +197,70 @@ angular.module('dcomDialog', [])
                     }
                 };
 
+                /**
+                 * Calls all registered stack callbacks
+                 * @param {string} stack
+                 */
                 DcomDialog.prototype.callStackArray = function(stack) {
                     var arr = this._callStack[stack] || [];
 
                     for (var j=0, jMax=arr.length; j<jMax; j++) { arr[j].call(this) }
                 };
 
+                /**
+                 * Closes modal with further DOM element destruction
+                 * @param {event} e
+                 */
                 DcomDialog.prototype.close = function(e) {
                     this._persistent ? this.dismiss(e) : this.destroy();
                 };
 
+                /**
+                 * Handles backdrop click
+                 * @param {event} e
+                 */
                 DcomDialog.prototype.backdropClick = function(e) {
                     e && e.preventDefault();
 
-                    if (!this._backdropDisabled) this.close();
+                    if (!this._backdropDisabled) this.close(e);
                 };
 
-
-
                 return {
-                    create: function(template, options) {
-                        return new DcomDialog(template, options)
-                    },
+                    create: function(template, options) { return new DcomDialog(template, options)},
                     get: function(name) { return getDialog('name', name) },
                     getById: function(id) { return getDialog('id', id) },
-                    allDialogs: function() { return allDialogs },
-                    openedDialogs: function() { return openedDialogs }
+                    allModals: allModals,
+                    openedModals: openedModals
                 }
             }])
-    .directive('dcomDialogWidget',
-        ['dialogService','$document',
-            function(dialogService,$document) {
+    .directive('dcModalWidget',
+        ['dialogService',
+            function(dialogService) {
                 return {
                     priority: 10,
                     replace: true,
                     templateUrl: 'src/spine.html',
                     link: function(scope, elem, attrs) {
-                        scope.allDialogs = dialogService.allDialogs;
-                        scope.openedDialogs = dialogService.openedDialogs;
+                        scope.allModals = dialogService.allModals;
+                        scope.openedModals = dialogService.openedModals;
 
                         // ESC key event closes the dialog
-                        $document.keyup(function(e) {
-                            var topDialog = dialogService.openedDialogs()[0];
+                        document.addEventListener('keyup', function(e) {
+                            if (scope.openedModals.length) {
+                                var topDialog = scope.openedModals[0];
 
-                            scope.$apply(function(){
-                                e.keyCode == 27 && topDialog &&
-                                    dialogService.getById(topDialog).close(e) &&
-                                e.preventDefault();
-                            });
+                                scope.$apply(function(){
+                                    e.keyCode == 27 && topDialog &&
+                                        dialogService.getById(topDialog).close(e);
+                                    e.preventDefault();
+                                    e.stopPropagation();
+                                });
+                            }
                         });
                     }
                 }
             }])
-    .directive('dcomDialog',
+    .directive('dcModal',
         ['dialogService',
             function(dialogService) {
                 return {
@@ -241,19 +279,17 @@ angular.module('dcomDialog', [])
                     }
                 }
             }])
-    .directive('dcomDialogBackdrop',
+    .directive('dcBackdrop',
         ['dialogService',
             function(dialogService) {
                 return {
                     priority: 100,
                     replace: true,
-                    template: '<div class="dcomDialogBackdrop" ng-class="{shown: showBackdrop()}"></div>',
+                    template: '<div class="dcModalBackdrop" ng-class="{shown: openedModals.length}"></div>',
                     link: function(scope, elem, attrs) {
-                        scope.showBackdrop = function() { return scope.openedDialogs().length };
-
                         //bind backdrop click event to dismiss function of the topmostDialog
-                        elem.on('click', function(e) {
-                            scope.$apply(function() { dialogService.getById(scope.openedDialogs()[0]).backdropClick(e) });
+                        elem[0].addEventListener('mouseup', function(e) {
+                            scope.$apply(function() { dialogService.getById(scope.openedModals[0]).backdropClick(e) });
                         });
                     }
                 }

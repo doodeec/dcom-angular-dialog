@@ -1,49 +1,40 @@
 <!doctype html>
-<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+<html>
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Demo Angular Dialog</title>
-    <meta name="description" content="">
+    <title>Angular Dialog Demo</title>
     <meta name="viewport" content="width=device-width">
-    <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
 
-        <!-- build:css(.tmp) styles/main.css -->
-        <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css">
-        <link rel="stylesheet" href="styles/main.css">
-        <link rel="stylesheet" href="src/dcomDialog.css">
-        <!-- endbuild -->
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css">
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="src/dcModal.css">
 </head>
-  <body ng-app="angularDialogApp">
-    <div dcom-dialog-widget></div>
-    <!--[if lt IE 7]>
-      <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
-    <![endif]-->
+  <body>
+    <div dc-modal-widget></div>
 
     <!--[if lt IE 9]>
       <script src="bower_components/es5-shim/es5-shim.js"></script>
       <script src="bower_components/json3/lib/json3.min.js"></script>
     <![endif]-->
 
-    <!-- Add your site or application content here -->
-    <div class="container" ng-view=""></div>
+    <div class="container" ng-controller="MainCtrl">
+        <div class="hero-unit">
+            <h1>Hello!</h1>
+            <p>You now have Dcom-Angular-Dialog demo installed.</p>
+            <h3>Enjoy coding! - Yeoman</h3>
+            <a class="btn btn-primary" ng-click="oneDialog()">Open Error dialog</a>
+            <a class="btn btn-info" ng-click="twoDialogs()">Open two dialogs</a>
+            <a class="btn btn-warning" ng-click="ctrlDialog()">Open dialog with controller</a>
+        </div>
+    </div>
 
     <script src="bower_components/jquery/jquery.js"></script>
     <script src="bower_components/angular/angular.js"></script>
 
-        <!-- build:js scripts/modules.js -->
-        <script src="bower_components/angular-resource/angular-resource.js"></script>
         <script src="bower_components/bootstrap/js/modal.js"></script>
-        <!-- endbuild -->
-
-        <!-- build:js({.tmp,app}) scripts/scripts.js -->
         <script src="scripts/app.js"></script>
         <script src="scripts/controllers/main.js"></script>
-        <!--<script src="../src/dcomDialog.min.js"></script>-->
-        <script src="src/dcomDialog.js"></script>
-        <!-- endbuild -->
+        <script src="src/dcModal.js"></script>
 </body>
 </html>
