@@ -39,6 +39,13 @@ module.exports = function (grunt) {
                 }
             }
         },
+        cssmin: {
+            minify: {
+                files: {
+                    'src/<%= yeoman.appName %>-<%= yeoman.appVersion %>.min.css': ['src/dcModal.css']
+                }
+            }
+        },
         autoprefixer: {
             options: {
                 browsers: ['last 2 version']

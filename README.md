@@ -39,9 +39,10 @@ disabled by setting parameter `backdrop` to false in method `.create()`.
 
 ###Usage
 Include Bootstrap 3 `modal.js` file
-Include dcomDialog.js and dcomDialog.css, and in the app module definition put `dcomDialog` as a required module
+Include `dcom-angular-dialog-{version}.min.js` and `dcom-angular-dialog-{version}.min.css`,
+and in the app module definition put `dcModal` as a required module
 
-    angular.module('myApp', ['dcomDialog'])...
+    angular.module('myApp', ['dcModal'])...
 
 ###Parameters
     
