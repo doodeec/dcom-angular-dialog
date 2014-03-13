@@ -70,6 +70,7 @@ angular.module('dcModal', [])
                             this.controller = ctrlFn;
                         } else if (angular.isFunction(options.controller)) {
                             this.controller = options.controller;
+                            this.controller.$inject = ['$scope'];
                         }
                     }
 

@@ -14,7 +14,7 @@ module.exports = function (grunt) {
     try {
         yeomanConfig.app = require('./bower.json').appPath || 'demo';
         yeomanConfig.appName = require('./bower.json').name;
-        yeomanConfig.appVersion = require('./bower.json').version;
+        yeomanConfig.appVersion = require('./package.json').version;
     } catch (e) {
     }
 

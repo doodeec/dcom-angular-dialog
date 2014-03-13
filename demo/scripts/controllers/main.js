@@ -21,7 +21,7 @@ angular.module('angularModalDemo')
                 $timeout(function() {
                     var secondDialog = dialogService.create('error');
                     secondDialog.open();
-                });
+                },200);
             };
 
             $scope.ctrlDialog = function() {
@@ -32,6 +32,19 @@ angular.module('angularModalDemo')
                         magicButton: function() {
                             this.message = "Whoa, message has changed";
                         }
+                    }
+                };
+
+                var dialog = dialogService.create('ctrl',options);
+                dialog.open();
+            };
+
+            $scope.ctrlDialog2 = function() {
+                var options = {
+                    className: 'ctrlDialog',
+                    controller: function($scope) {
+                        $scope.message = 'This is message injected to the scope via' +
+                            'modal options.';
                     }
                 };
 
