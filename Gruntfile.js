@@ -64,7 +64,8 @@ module.exports = function (grunt) {
 
     grunt.registerTask('minify', [
         'copy',
-        'uglify'
+        'uglify',
+        'cssmin'
     ]);
 
     grunt.registerTask('default', [

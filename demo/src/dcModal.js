@@ -82,13 +82,15 @@ angular.module('dcModal', [])
 
                     allModals.push(this);
 
-                    this.loadTemplate().then(function loadTmpSuccess(template) {
-                        dialog.template = template;
-                        dialog._loadDirective.promise.then(function () {
-                            dialog._ready = true;
-                            dialog.callStackArray('ready');
-                        });
-                    }).catch(function loadTmpError(error) {
+                    this.loadTemplate()
+                        .then(function loadTmpSuccess(template) {
+                            dialog.template = template;
+                            dialog._loadDirective.promise.then(function () {
+                                dialog._ready = true;
+                                dialog.callStackArray('ready');
+                            });
+                        })
+                        .catch(function loadTmpError(error) {
                             throw new Error(error)
                         });
                 };
@@ -185,9 +187,11 @@ angular.module('dcModal', [])
                 DcomDialog.prototype.destroy = function () {
                     var that = this;
 
-                    this.dismiss().then(function () {
-                        destroyDialog.call(that);
-                    }).catch(function () {
+                    this.dismiss()
+                        .then(function () {
+                            destroyDialog.call(that);
+                        })
+                        .catch(function () {
                             destroyDialog.call(that);
                         });
                 };
@@ -280,16 +284,16 @@ angular.module('dcModal', [])
     .directive('dcModal',
         ['dialogService',
             function (dialogService) {
+                var modalOpt = {
+                    show: true,
+                    backdrop: false,
+                    keyboard: false
+                };
+
                 return {
                     restrict: 'EA',
                     priority: 200,
                     link: function (scope, elem, attrs) {
-                        var modalOpt = {
-                            show: true,
-                            backdrop: false,
-                            keyboard: false
-                        };
-
                         var dialog = dialogService.getById(scope.dialog.id);
                         dialog.show = function () {
                             elem.modal(modalOpt)

@@ -2,8 +2,8 @@
 
 angular.module('angularModalDemo')
   .controller('MainCtrl',
-    ['$scope','dialogService',
-        function ($scope, dialogService) {
+    ['$scope','dialogService','$timeout',
+        function ($scope, dialogService, $timeout) {
 
             $scope.oneDialog = function() {
                 var dialog = dialogService.create('error');
@@ -17,8 +17,11 @@ angular.module('angularModalDemo')
                 };
                 var firstDialog = dialogService.create('info',firstDialogOptions);
                 firstDialog.open();
-                var secondDialog = dialogService.create('error');
-                secondDialog.open();
+
+                $timeout(function() {
+                    var secondDialog = dialogService.create('error');
+                    secondDialog.open();
+                });
             };
 
             $scope.ctrlDialog = function() {
