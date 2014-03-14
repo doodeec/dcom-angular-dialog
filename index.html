@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
+
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <title>Dcom-angular-dialog by doodeec</title>
+  </head>
+
+  <body>
+    <header>
+      <div class="inner">
+        <h1>Dcom-angular-dialog</h1>
+        <h2>Angular dialog module. Uses Bootstrap 3 style modals.</h2>
+        <a href="https://github.com/doodeec/dcom-angular-dialog" class="button"><small>View project on</small>GitHub</a>
+      </div>
+    </header>
+
+    <div id="content-wrapper">
+      <div class="inner clearfix">
+        <section id="main-content">
+          <h1>
+<a name="dcom-angular-dialog" class="anchor" href="#dcom-angular-dialog"><span class="octicon octicon-link"></span></a>dcom-angular-dialog</h1>
+
+<p><a href="http://doodeec.com">doodeec.com</a></p>
+
+<h2>
+<a name="version" class="anchor" href="#version"><span class="octicon octicon-link"></span></a>Version</h2>
+
+<p>0.2.1</p>
+
+<h2>
+<a name="description" class="anchor" href="#description"><span class="octicon octicon-link"></span></a>Description</h2>
+
+<p>This is a dialog module for angular, which uses Bootstrap 3 modals style.
+It creates <code>dialogService</code> in your app.</p>
+
+<p>dialogService allows you to create dialog in this way:</p>
+
+<pre><code>dialogService.create(templateName, options);
+</code></pre>
+
+<p>for example</p>
+
+<pre><code>var dialog = dialogService.create('error', {
+    className: 'errorDialog',
+    controller: { message: "scope message" },
+    persistent: true,
+    backdrop: false
+});
+</code></pre>
+
+<p>and call different methods:</p>
+
+<pre><code>dialog.open()
+dialog.close()
+dialog.dismiss()
+dialog.destroy()
+</code></pre>
+
+<p>or register a custom callStack on these events:</p>
+
+<ul>
+<li>open</li>
+<li>ready</li>
+<li>dismiss</li>
+<li>destroy</li>
+</ul><p>like this</p>
+
+<pre><code>dialog.on('open', function() {/* callback */})
+</code></pre>
+
+<p>Closing the modal with ESC key, or with Backdrop click event are both supported. Closing with Backdrop click can be
+disabled by setting <code>backdrop</code> option to false when creating a modal.</p>
+
+<h3>
+<a name="usage" class="anchor" href="#usage"><span class="octicon octicon-link"></span></a>Usage</h3>
+
+<p>Include <code>dcom-angular-dialog-{version}.min.js</code> and <code>dcom-angular-dialog-{version}.min.css</code>,
+and in the app module definition add <code>dcModal</code> as required module</p>
+
+<pre><code>angular.module('myApp', ['dcModal'])...
+</code></pre>
+
+<h3>
+<a name="parameters" class="anchor" href="#parameters"><span class="octicon octicon-link"></span></a>Parameters</h3>
+
+<pre><code>- templateName
+    name of html template defined for the modal, will be searched in templates folder by default (relative path)
+- options
+    object of additional options
+</code></pre>
+
+<h3>
+<a name="supported-modal-options" class="anchor" href="#supported-modal-options"><span class="octicon octicon-link"></span></a>Supported Modal Options</h3>
+
+<pre><code>- className     {string}
+    CSS class of the root dialog element
+- controller    {Function/Object}
+    controller function or object with scope definition to be used inside modal
+- persistent    {Boolean}
+    defines if .close() method hides modal or removes it completely from DOM
+- backdrop      {Boolean}
+    when false, it disables closing of the dialog on backdrop click
+- animate       {Boolean}
+    when false, modal is not animated when displaying (true by default)
+</code></pre>
+
+<h3>
+<a name="credits" class="anchor" href="#credits"><span class="octicon octicon-link"></span></a>Credits</h3>
+
+<p>Thanks to <a href="http://github.com/capaj">capaj</a> for the initial idea.</p>
+
+<h3>
+<a name="licence" class="anchor" href="#licence"><span class="octicon octicon-link"></span></a>Licence</h3>
+
+<p>Released under MIT licence.</p>
+
+<h3>
+<a name="support" class="anchor" href="#support"><span class="octicon octicon-link"></span></a>Support</h3>
+
+<p>If you encounter any problems using this module, contact me via <a href="http://doodeec.com">doodeec.com</a>
+or <a href="mailto:doodeec@gmail.com">send me an email</a></p>
+
+<h3>
+<a name="contribution" class="anchor" href="#contribution"><span class="octicon octicon-link"></span></a>Contribution</h3>
+
+<p>If you want to make this code better, feel free to open a PR</p>
+        </section>
+
+        <aside id="sidebar">
+          <a href="https://github.com/doodeec/dcom-angular-dialog/zipball/master" class="button">
+            <small>Download</small>
+            .zip file
+          </a>
+          <a href="https://github.com/doodeec/dcom-angular-dialog/tarball/master" class="button">
+            <small>Download</small>
+            .tar.gz file
+          </a>
+
+          <p class="repo-owner"><a href="https://github.com/doodeec/dcom-angular-dialog"></a> is maintained by <a href="https://github.com/doodeec">doodeec</a>.</p>
+
+          <p>This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the Architect theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.</p>
+        </aside>
+      </div>
+    </div>
+
+            <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-48934678-1");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+
+  </body>
+</html>
