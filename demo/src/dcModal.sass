@@ -1,7 +1,8 @@
-.top-modal
-    z-index: 20000
+.topmostDialog
+    z-index: 10042
+    
 
-.dc-modal-backdrop
+.dcModalBackdrop
     position: fixed
     top: 0
     right: 0
@@ -10,74 +11,19 @@
     z-index: 10030
     background-color: #000
     opacity: 0
-    transition: opacity 0.3s ease, bottom 0.05s ease
+    transition: opacity 0.2s ease, bottom 0.05s ease
     &.shown
         opacity: .8
         bottom: 0
 
-.dc-modal
-    position: fixed
+.modal
     overflow: hidden
-    bottom: 100%
+    top: 50%
     left: 50%
+    right: auto
+    bottom: auto
     outline: 0
-    transform: translate(-50%, 0)
-    display: block
-    opacity: 0
+    transform: translate(-50%, -50%)
 
-    &.anim
-        transition: all 0.3s ease
-
-    &.revealed
-        bottom: 50%
-        transform: translate(-50%, 50%)
-        opacity: 1
-
-.dc-modal-dialog
-    position: relative
-    z-index: 1050
+.modal-dialog
     padding: 0
-
-.dc-modal-header
-    min-height: 1em
-    padding: 1em
-    border-bottom: 1px solid #e5e5e5
-
-    h3
-        margin: 0
-
-.dc-modal-body
-    position: relative
-    padding: 1.5em
-
-.dc-modal-footer
-    padding: 1em 1.5em
-    margin-top: 1em
-    text-align: right
-    border-top: 1px solid #e5e5e5
-
-    &:before, &:after
-        display: table
-        content: " "
-
-.dc-modal-content
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5)
-    position: relative
-    background-color: #ffffff
-    border: 1px solid #999999
-    border: 1px solid rgba(0, 0, 0, 0.2)
-    border-radius: 6px
-    outline: none
-    background-clip: padding-box
-
-@media screen and (max-width: 490px)
-    .dc-modal-dialog
-        width: 400px
-        max-width: 95%
-@media screen and (min-width: 491px) and (max-width: 767px)
-    .dc-modal-dialog
-        width: 500px
-        max-width: 90%
-@media screen and (min-width: 768px)
-    .dc-modal-dialog
-        width: 600px

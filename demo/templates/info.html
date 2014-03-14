@@ -1,16 +1,15 @@
-<div class="dc-modal-header">
-    <h3>Info</h3>
-</div>
-<div class="dc-modal-body">
-    <p>This is info dialog.</p>
-
-    <p>It's the second dialog.</p>
-
-    <p>It's bigger than error dialog.</p>
-
-    <p>So it should be visible under error dialog when opened.</p>
-</div>
-<div class="dc-modal-footer">
-    <button class="btn btn-info" ng-click="dialog.close()">Cancel</button>
-    <button class="btn submit" ng-click="dialog.close()">OK</button>
+<div role="dialog" aria-labelledby="appAlertLabel" aria-hidden="true">
+    <div class="modal-header">
+        <h3>Info</h3>
+    </div>
+    <div class="modal-body">
+        <p>This is info dialog.</p>
+        <p>It's the second dialog.</p>
+        <p>It's bigger than error dialog.</p>
+        <p>So it should be visible under error dialog when opened.</p>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-info" ng-click="dialog.close()">Cancel</button>
+        <button class="btn submit" ng-click="dialog.close()">OK</button>
+    </div>
 </div>
