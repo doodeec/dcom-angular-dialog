@@ -2,10 +2,10 @@
 [doodeec.com](http://doodeec.com)
 
 ##Version
-0.2.0
+0.2.1
 
 ##Description
-This is a dialog module for angular, which uses Bootstrap 3 modals and the custom backdrop.
+This is a dialog module for angular, which uses Bootstrap 3 modals style.
 It creates `dialogService` in your app.
 
 dialogService allows you to create dialog in this way:
@@ -44,7 +44,6 @@ Closing the modal with ESC key, or with Backdrop click event are both supported.
 disabled by setting `backdrop` option to false when creating a modal.
 
 ###Usage
-Include Bootstrap 3 `modal.js` file.
 Include `dcom-angular-dialog-{version}.min.js` and `dcom-angular-dialog-{version}.min.css`,
 and in the app module definition add `dcModal` as required module
 
@@ -59,14 +58,16 @@ and in the app module definition add `dcModal` as required module
 
 ###Supported Modal Options
 
-    - className
+    - className     {string}
         CSS class of the root dialog element
-    - controller
+    - controller    {Function/Object}
         controller function or object with scope definition to be used inside modal
-    - persistent
-        boolean value, defines if .close() method hides modal or removes it completely from DOM
-    - backdrop
+    - persistent    {Boolean}
+        defines if .close() method hides modal or removes it completely from DOM
+    - backdrop      {Boolean}
         when false, it disables closing of the dialog on backdrop click
+    - animate       {Boolean}
+        when false, modal is not animated when displaying (true by default)
 
 ###Credits
 
@@ -84,4 +85,4 @@ or [send me an email](mailto:doodeec@gmail.com)
 If you want to make this code better, feel free to open a PR
 
 ###Future
-Plan is to get rid of Bootstrap and jQuery completely
+Plan is to get rid of jQuery completely and use just jqLite

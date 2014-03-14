@@ -32,7 +32,8 @@ angular.module('angularModalDemo')
                         magicButton: function() {
                             this.message = "Whoa, message has changed";
                         }
-                    }
+                    },
+                    animate: false
                 };
 
                 var dialog = dialogService.create('ctrl',options);

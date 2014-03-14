@@ -10,19 +10,28 @@
     z-index: 10030
     background-color: #000
     opacity: 0
-    transition: opacity 0.2s ease, bottom 0.05s ease
+    transition: opacity 0.3s ease, bottom 0.05s ease
     &.shown
         opacity: .8
         bottom: 0
 
-.modal
+.dcModal
+    position: fixed
     overflow: hidden
-    top: 50%
+    bottom: 100%
     left: 50%
-    right: auto
-    bottom: auto
     outline: 0
-    transform: translate(-50%, -50%)
+    transform: translate(-50%, 0)
+    display: block
+    opacity: 0
+
+    &.anim
+        transition: all 0.3s ease
+
+    &.revealed
+        bottom: 50%
+        transform: translate(-50%, 50%)
+        opacity: 1
 
 .modal-dialog
     padding: 0
