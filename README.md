@@ -83,6 +83,3 @@ or [send me an email](mailto:doodeec@gmail.com)
 
 ###Contribution
 If you want to make this code better, feel free to open a PR
-
-###Future
-Plan is to get rid of jQuery completely and use just jqLite

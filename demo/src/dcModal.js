@@ -314,7 +314,7 @@ angular.module('dcModal', [])
                     restrict: 'EA',
                     priority: 100,
                     replace: true,
-                    template: '<div class="dcModalBackdrop" ng-class="{shown: openedModals.length}"></div>',
+                    template: '<div class="dc-modal-backdrop" ng-class="{shown: openedModals.length}"></div>',
                     link: function (scope, elem, attrs) {
                         //bind backdrop click event to dismiss function of the topmostDialog
                         elem[0].addEventListener('mouseup', function (e) {
