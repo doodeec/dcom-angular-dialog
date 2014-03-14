@@ -47,6 +47,8 @@ angular.module('dcModal', [])
                     this.template = null;
                     this.controller = null;
                     this.className = null;
+                    this.animate = true;
+
                     this._persistent = false;
                     this._backdropDisabled = false;
                     this._ready = false;
@@ -55,6 +57,7 @@ angular.module('dcModal', [])
 
                     if (options && angular.isObject(options)) {
                         this.className = options.className;
+                        this.animate = !(options.animate === false);
                         this._persistent = options.persistent;
                         this._backdropDisabled = options.backdrop === false;
 
@@ -134,8 +137,8 @@ angular.module('dcModal', [])
                         openedIndex = openedModals.indexOf(this.id);
 
                     var openFunction = function () {
-                        that.show();
                         openedModals.unshift(that.id);
+                        that.show();
                         openDefer.resolve();
                         that.callStackArray('open');
                     };
@@ -282,24 +285,22 @@ angular.module('dcModal', [])
                 }
             }])
     .directive('dcModal',
-        ['dialogService',
-            function (dialogService) {
+        ['dialogService','$timeout',
+            function (dialogService,$timeout) {
                 return {
                     restrict: 'EA',
                     priority: 200,
                     link: function (scope, elem, attrs) {
-                        var modalOpt = {
-                            show: true,
-                            backdrop: false,
-                            keyboard: false
-                        };
-
                         var dialog = dialogService.getById(scope.dialog.id);
                         dialog.show = function () {
-                            elem.modal(modalOpt)
+                            $timeout(function() {
+                                elem.addClass('revealed');
+                            });
                         };
                         dialog.hide = function () {
-                            elem.modal('hide')
+                            $timeout(function() {
+                                elem.removeClass('revealed');
+                            });
                         };
                         dialog._loadDirective.resolve();
                     }
@@ -323,9 +324,9 @@ angular.module('dcModal', [])
                     }
                 }
             }])
-    .run(function ($compile, $rootScope, $timeout) {
+    /*.run(function ($compile, $rootScope, $timeout) {
         // insert modal wrapper into the DOM
         $timeout(function () {
             angular.element(document.body)[0].appendChild($compile(angular.element('<dc-modal-widget />')[0])($rootScope)[0]);
         });
-    });
+    });*/

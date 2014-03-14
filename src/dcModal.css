@@ -1,5 +1,5 @@
-.topModal {
-  z-index: 20000; }
+.topmostDialog {
+  z-index: 10042; }
 
 .dcModalBackdrop {
   position: fixed;
@@ -18,13 +18,22 @@
 
 .modal {
   overflow: hidden;
-  top: 50%;
+  bottom: 150%;
   left: 50%;
   right: auto;
-  bottom: auto;
+  top: auto;
   outline: 0;
-  -webkit-transform: translate(-50%, -50%);
-  transform: translate(-50%, -50%); }
+  -webkit-transform: translate(-50%, 50%);
+  transform: translate(-50%, 50%);
+  display: block; }
+
+.animatedModal {
+  -webkit-transition: bottom 0.3s ease;
+  transition: bottom 0.3s ease; }
 
 .modal-dialog {
-  padding: 0; }
+  padding: 0;
+  margin: 0; }
+
+.revealed {
+  bottom: 50%; }
