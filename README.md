@@ -18,8 +18,8 @@ for example
         className: 'errorDialog',
         controller: { message: "scope message" },
         persistent: true,
-        backdrop: false);
-    }
+        backdrop: false
+    });
 
 and call different methods:
 
