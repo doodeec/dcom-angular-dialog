@@ -290,8 +290,11 @@ angular.module('dcModal', [])
                 return {
                     restrict: 'EA',
                     priority: 200,
+                    scope: {
+                        modalId: '='
+                    },
                     link: function (scope, elem, attrs) {
-                        var dialog = dialogService.getById(scope.dialog.id);
+                        var dialog = dialogService.getById(scope.modalId);
                         dialog.show = function () {
                             $timeout(function() {
                                 elem.addClass('revealed');
