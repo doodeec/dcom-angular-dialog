@@ -1,7 +1,7 @@
-.topmostDialog {
+.top-modal {
   z-index: 10042; }
 
-.dcModalBackdrop {
+.dc-modal-backdrop {
   position: fixed;
   top: 0;
   right: 0;
@@ -12,7 +12,7 @@
   opacity: 0;
   -webkit-transition: opacity 0.2s ease, bottom 0.05s ease;
   transition: opacity 0.2s ease, bottom 0.05s ease; }
-  .dcModalBackdrop.shown {
+  .dc-modal-backdrop.shown {
     opacity: 0.8;
     bottom: 0; }
 
@@ -29,7 +29,7 @@
   display: block;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5); }
 
-.animatedModal {
+.animated-modal {
   -webkit-transition: bottom 0.3s ease;
   transition: bottom 0.3s ease; }
 

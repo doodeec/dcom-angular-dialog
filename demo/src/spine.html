@@ -1,7 +1,7 @@
 <div class="modal-layer">
     <div class="dc-modal {{dialog.className}}" aria-hidden="true" tabindex="-1"
          ng-repeat="dialog in allModals" id="{{dialog.name}}"
-         ng-class="{topmostDialog: dialog.id == openedModals[0], animatedModal: dialog.animate}"
+         ng-class="{'top-modal': dialog.id == openedModals[0], 'animated-modal': dialog.animate}"
          dc-modal modal-id="dialog.id">
 
         <div class="dc-modal-dialog" ng-switch on="dialog.controller">
