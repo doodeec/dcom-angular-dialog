@@ -17,7 +17,8 @@
         bottom: 0
 
 
-.modal
+.dc-modal
+    position: fixed
     overflow: hidden
     bottom: 150%
     left: 50%
@@ -26,6 +27,7 @@
     outline: 0
     transform: translate(-50%, 50%)
     display: block
+    box-shadow: 0 5px 15px rgba(0,0,0,0.5)
 
 .animatedModal
     transition: bottom 0.3s ease
@@ -36,3 +38,49 @@
 
 .revealed
     bottom: 50%
+
+.dc-modal-content
+    position: relative
+    background-color: #fff
+    border: 1px solid #999
+    border: 1px solid rgba(0, 0, 0, 0.2)
+    border-radius: 3px
+    outline: none
+    background-clip: padding-box
+
+.dc-modal-header
+    padding: 1em
+    h3
+        margin: 0
+
+.dc-modal-body
+    position: relative
+    padding: 1.5em
+    border-top: 1px solid #e5e5e5
+
+.dc-modal-footer
+    padding: 1em 1.5em
+    margin-top: 1em
+    text-align: right
+    //border-top: 1px solid #e5e5e5
+
+    &:before, &:after
+        display: table
+        content: " "
+
+    &:after
+        clear: both
+
+@media screen and (max-width: 480px)
+    .dc-modal
+        width: 400px
+        max-width: 95%
+
+@media screen and (min-width: 481px) and (max-width: 768px)
+    .dc-modal
+        width: 500px
+        max-width: 90%
+
+@media screen and (min-width: 769px)
+    .dc-modal
+        width: 600px

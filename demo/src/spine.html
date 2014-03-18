@@ -1,15 +1,15 @@
 <div class="modal-layer">
-    <div class="modal {{dialog.className}}" aria-hidden="true" tabindex="-1"
+    <div class="dc-modal {{dialog.className}}" aria-hidden="true" tabindex="-1"
          ng-repeat="dialog in allModals" id="{{dialog.name}}"
          ng-class="{topmostDialog: dialog.id == openedModals[0], animatedModal: dialog.animate}"
          dc-modal modal-id="dialog.id">
 
-        <div class="modal-dialog" ng-switch on="dialog.controller">
+        <div class="dc-modal-dialog" ng-switch on="dialog.controller">
             <div ng-switch-when="null">
-                <div class="modal-content" ng-include src="dialog.template"></div>
+                <div class="dc-modal-content" ng-include src="dialog.template"></div>
             </div>
             <div ng-switch-default>
-                <div class="modal-content" ng-include src="dialog.template" ng-controller="dialog.controller"></div>
+                <div class="dc-modal-content" ng-include src="dialog.template" ng-controller="dialog.controller"></div>
             </div>
         </div>
 

@@ -299,7 +299,7 @@ angular.module('dcModal', [])
                         dialog.show = function () {
                             $timeout(function () {
                                 elem.addClass('revealed');
-                            });
+                            },10);
                         };
                         dialog.hide = function () {
                             $timeout(function () {
