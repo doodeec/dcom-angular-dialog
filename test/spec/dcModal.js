@@ -37,9 +37,8 @@ describe('Modal:: dialogService', function () {
     });
 
     it('should destroy modal', function () {
-        var modal = dialogService.create('error');
+        dialogService.create('error').close();
 
-        modal.close();
         $timeout(function() {
             expect(dialogService.allModals.length).toBe(0);
         },200);
@@ -48,16 +47,33 @@ describe('Modal:: dialogService', function () {
     it('should open modal', function () {
         $httpBackend.expectGET('templates/error')
             .respond('<div></div>');
+        $httpBackend.expectGET('templates/info')
+            .respond('<div></div>');
+        $httpBackend.expectGET('templates/warn')
+            .respond('<div></div>');
 
-        var modal = dialogService.create('error');
-        modal.open();
+        dialogService.create('error').open();
         $timeout(function() {
             expect(dialogService.openedModals.length).toBe(1);
+        });
+
+        dialogService.create('info');
+        dialogService.get('info').open();
+        $timeout(function() {
+            expect(dialogService.openedModals.length).toBe(2);
+        });
+
+        dialogService.create('warn');
+        dialogService.getById(3).open();
+        $timeout(function() {
+            expect(dialogService.openedModals.length).toBe(3);
         });
     });
 
     it('should close opened modal', function () {
         $httpBackend.expectGET('templates/error')
+            .respond('<div></div>');
+        $httpBackend.expectGET('templates/info')
             .respond('<div></div>');
 
         var modal = dialogService.create('error');
@@ -65,6 +81,19 @@ describe('Modal:: dialogService', function () {
         $timeout(function() {
             modal.close();
             expect(dialogService.openedModals.length).toBe(0);
+        });
+
+        dialogService.create('info', {animate: false}).open();
+        $timeout(function() {
+            expect(dialogService.openedModals.length).toBe(1);
+            //fake ESC keyup event
+            var keyboardEvent = document.createEvent("KeyboardEvent");
+            var initMethod = typeof keyboardEvent.initKeyboardEvent !== 'undefined' ? "initKeyboardEvent" : "initKeyEvent";
+            keyboardEvent[initMethod]("keyup",true,true,window,false,false,false,false,27,0);
+            document.dispatchEvent(keyboardEvent);
+            $timeout(function() {
+                expect(dialogService.openedModals.length).toBe(0);
+            });
         });
     });
 
@@ -101,5 +130,9 @@ describe('Modal:: dialogService', function () {
                 expect(array.length).toBe(1);
             });
         });
+    });
+
+    it('should attach controller inside the modal', function () {
+        //TODO
     });
 });
