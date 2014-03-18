@@ -33,7 +33,7 @@ or register a custom callStack on these events:
 - open
 - ready
 - dismiss
-- destroy
+- destroy (when modal is being destroyed, it gets dismissed first, so dismissed stack is called also)
 
 like this
 

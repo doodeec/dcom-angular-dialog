@@ -17,9 +17,9 @@ angular.module('dcModal', [])
                 }
 
                 function destroyDialog() {
-                    var that = this;
-                    // because of bootstrap's detecting of transitions, timeout is needed to prevent
-                    // disabling scrollbar on body
+                    var that = this,
+                        delay = this.animate ? 200 : 0;
+
                     $timeout(function () {
                         var thatIndex = allModals.indexOf(that);
                         if (thatIndex != -1) {
@@ -27,7 +27,7 @@ angular.module('dcModal', [])
                             that._ready = false;
                             allModals.splice(thatIndex, 1);
                         }
-                    }, 200);
+                    }, delay);
                 }
 
                 /**

@@ -46,8 +46,60 @@ describe('Modal:: dialogService', function () {
     });
 
     it('should open modal', function () {
+        $httpBackend.expectGET('templates/error')
+            .respond('<div></div>');
+
         var modal = dialogService.create('error');
         modal.open();
-//        expect(dialogService.openedModals.length).toBe(1);
+        $timeout(function() {
+            expect(dialogService.openedModals.length).toBe(1);
+        });
+    });
+
+    it('should close opened modal', function () {
+        $httpBackend.expectGET('templates/error')
+            .respond('<div></div>');
+
+        var modal = dialogService.create('error');
+        modal.open();
+        $timeout(function() {
+            modal.close();
+            expect(dialogService.openedModals.length).toBe(0);
+        });
+    });
+
+    it('should be called once modal is opened', function () {
+        $httpBackend.expectGET('templates/error')
+            .respond('<div></div>');
+
+        var modal = dialogService.create('error'),
+            array = [];
+        modal.on('open', function() {
+            array.push(1);
+        });
+        modal.open();
+        expect(array.length).toBe(0);
+        $timeout(function() {
+            expect(array.length).toBe(1);
+        });
+    });
+
+    it('should be called once modal is destroyed', function () {
+        $httpBackend.expectGET('templates/error')
+            .respond('<div></div>');
+
+        var modal = dialogService.create('error', {animate: false}),
+            array = [];
+        modal.on('destroy', function() {
+            array.push(1);
+        });
+        modal.open();
+        expect(array.length).toBe(0);
+        $timeout(function() {
+            modal.close();
+            $timeout(function() {
+                expect(array.length).toBe(1);
+            });
+        });
     });
 });
