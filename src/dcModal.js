@@ -72,6 +72,7 @@ angular.module('dcModal', [])
                             ctrlFn.$inject = ['$scope'];
                             this.controller = ctrlFn;
                         } else if (angular.isFunction(options.controller)) {
+                            options.controller.$inject = ['$scope'];
                             this.controller = options.controller;
                         }
                     }
@@ -285,8 +286,8 @@ angular.module('dcModal', [])
                 }
             }])
     .directive('dcModal',
-        ['dialogService','$timeout',
-            function (dialogService,$timeout) {
+        ['dialogService', '$timeout',
+            function (dialogService, $timeout) {
                 return {
                     restrict: 'EA',
                     priority: 200,
@@ -296,12 +297,12 @@ angular.module('dcModal', [])
                     link: function (scope, elem, attrs) {
                         var dialog = dialogService.getById(scope.modalId);
                         dialog.show = function () {
-                            $timeout(function() {
+                            $timeout(function () {
                                 elem.addClass('revealed');
                             });
                         };
                         dialog.hide = function () {
-                            $timeout(function() {
+                            $timeout(function () {
                                 elem.removeClass('revealed');
                             });
                         };
@@ -327,9 +328,10 @@ angular.module('dcModal', [])
                     }
                 }
             }])
-    .run(function ($compile, $rootScope, $timeout) {
-        // insert modal wrapper into the DOM
-        $timeout(function () {
-            angular.element(document.body)[0].appendChild($compile(angular.element('<dc-modal-widget />')[0])($rootScope)[0]);
-        });
-    });
+    .run(['$compile', '$rootScope', '$timeout',
+        function ($compile, $rootScope, $timeout) {
+            // insert modal wrapper into the DOM
+            $timeout(function () {
+                angular.element(document.body)[0].appendChild($compile(angular.element('<dc-modal-widget />')[0])($rootScope)[0]);
+            });
+        }]);
