@@ -327,9 +327,9 @@ angular.module('dcModal', [])
                     }
                 }
             }])
-    /*.run(function ($compile, $rootScope, $timeout) {
+    .run(function ($compile, $rootScope, $timeout) {
         // insert modal wrapper into the DOM
         $timeout(function () {
             angular.element(document.body)[0].appendChild($compile(angular.element('<dc-modal-widget />')[0])($rootScope)[0]);
         });
-    });*/
+    });
