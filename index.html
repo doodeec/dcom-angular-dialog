@@ -71,9 +71,9 @@ dialog.destroy()
 
 <ul>
 <li>open</li>
-<li>ready</li>
+<li>ready (called once template for modal is resolved - resolving template starts directly inside modal constructor)</li>
 <li>dismiss</li>
-<li>destroy</li>
+<li>destroy (when modal is being destroyed, it gets dismissed first, so dismissed stack is called also)</li>
 </ul><p>like this</p>
 
 <pre><code>dialog.on('open', function() {/* callback */})
