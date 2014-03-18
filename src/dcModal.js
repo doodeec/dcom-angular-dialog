@@ -17,9 +17,9 @@ angular.module('dcModal', [])
                 }
 
                 function destroyDialog() {
-                    var that = this;
-                    // because of bootstrap's detecting of transitions, timeout is needed to prevent
-                    // disabling scrollbar on body
+                    var that = this,
+                        delay = this.animate ? 200 : 0;
+
                     $timeout(function () {
                         var thatIndex = allModals.indexOf(that);
                         if (thatIndex != -1) {
@@ -27,7 +27,7 @@ angular.module('dcModal', [])
                             that._ready = false;
                             allModals.splice(thatIndex, 1);
                         }
-                    }, 200);
+                    }, delay);
                 }
 
                 /**
@@ -290,8 +290,11 @@ angular.module('dcModal', [])
                 return {
                     restrict: 'EA',
                     priority: 200,
+                    scope: {
+                        modalId: '='
+                    },
                     link: function (scope, elem, attrs) {
-                        var dialog = dialogService.getById(scope.dialog.id);
+                        var dialog = dialogService.getById(scope.modalId);
                         dialog.show = function () {
                             $timeout(function() {
                                 elem.addClass('revealed');
@@ -324,9 +327,9 @@ angular.module('dcModal', [])
                     }
                 }
             }])
-    /*.run(function ($compile, $rootScope, $timeout) {
+    .run(function ($compile, $rootScope, $timeout) {
         // insert modal wrapper into the DOM
         $timeout(function () {
             angular.element(document.body)[0].appendChild($compile(angular.element('<dc-modal-widget />')[0])($rootScope)[0]);
         });
-    });*/
+    });

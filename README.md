@@ -31,7 +31,7 @@ and call different methods:
 or register a custom callStack on these events:
 
 - open
-- ready
+- ready (called once template for modal is resolved - resolving template starts directly inside modal constructor)
 - dismiss
 - destroy (when modal is being destroyed, it gets dismissed first, so dismissed stack is called also)
 
