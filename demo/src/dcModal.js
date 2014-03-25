@@ -299,7 +299,7 @@ angular.module('dcModal', [])
                         dialog.show = function () {
                             $timeout(function () {
                                 elem.addClass('revealed');
-                            },10);
+                            },10);  //delay is for firefox to properly animate jump-in
                         };
                         dialog.hide = function () {
                             $timeout(function () {

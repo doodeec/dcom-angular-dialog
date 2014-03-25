@@ -39,9 +39,9 @@ describe('Modal:: dialogService', function () {
     it('should destroy modal', function () {
         dialogService.create('error').close();
 
-        $timeout(function() {
+        $timeout(function () {
             expect(dialogService.allModals.length).toBe(0);
-        },200);
+        }, 200);
     });
 
     it('should open modal', function () {
@@ -53,19 +53,19 @@ describe('Modal:: dialogService', function () {
             .respond('<div></div>');
 
         dialogService.create('error').open();
-        $timeout(function() {
+        $timeout(function () {
             expect(dialogService.openedModals.length).toBe(1);
         });
 
         dialogService.create('info');
         dialogService.get('info').open();
-        $timeout(function() {
+        $timeout(function () {
             expect(dialogService.openedModals.length).toBe(2);
         });
 
         dialogService.create('warn');
         dialogService.getById(3).open();
-        $timeout(function() {
+        $timeout(function () {
             expect(dialogService.openedModals.length).toBe(3);
         });
     });
@@ -78,20 +78,20 @@ describe('Modal:: dialogService', function () {
 
         var modal = dialogService.create('error');
         modal.open();
-        $timeout(function() {
+        $timeout(function () {
             modal.close();
             expect(dialogService.openedModals.length).toBe(0);
         });
 
         dialogService.create('info', {animate: false}).open();
-        $timeout(function() {
+        $timeout(function () {
             expect(dialogService.openedModals.length).toBe(1);
             //fake ESC keyup event
             var keyboardEvent = document.createEvent("KeyboardEvent");
             var initMethod = typeof keyboardEvent.initKeyboardEvent !== 'undefined' ? "initKeyboardEvent" : "initKeyEvent";
-            keyboardEvent[initMethod]("keyup",true,true,window,false,false,false,false,27,0);
+            keyboardEvent[initMethod]("keyup", true, true, window, false, false, false, false, 27, 0);
             document.dispatchEvent(keyboardEvent);
-            $timeout(function() {
+            $timeout(function () {
                 expect(dialogService.openedModals.length).toBe(0);
             });
         });
@@ -103,12 +103,12 @@ describe('Modal:: dialogService', function () {
 
         var modal = dialogService.create('error'),
             array = [];
-        modal.on('open', function() {
+        modal.on('open', function () {
             array.push(1);
         });
         modal.open();
         expect(array.length).toBe(0);
-        $timeout(function() {
+        $timeout(function () {
             expect(array.length).toBe(1);
         });
     });
@@ -119,14 +119,14 @@ describe('Modal:: dialogService', function () {
 
         var modal = dialogService.create('error', {animate: false}),
             array = [];
-        modal.on('destroy', function() {
+        modal.on('destroy', function () {
             array.push(1);
         });
         modal.open();
         expect(array.length).toBe(0);
-        $timeout(function() {
+        $timeout(function () {
             modal.close();
-            $timeout(function() {
+            $timeout(function () {
                 expect(array.length).toBe(1);
             });
         });
@@ -136,3 +136,64 @@ describe('Modal:: dialogService', function () {
         //TODO
     });
 });
+
+describe('Modal:: modal directive', function () {
+
+    beforeEach(module('dcModal'));
+
+    var dialogService,
+        $httpBackend,
+        $timeout,
+        $rootScope,
+        scope,
+        element;
+
+    beforeEach(inject(function ($injector) {
+        $rootScope = $injector.get('$rootScope');
+        $httpBackend = $injector.get('$httpBackend');
+        $timeout = $injector.get('$timeout');
+        dialogService = $injector.get('dialogService');
+
+        $httpBackend.expectGET('templates/info.html')
+            .respond('<div><modal-header></modal-header>' +
+                '<modal-body></modal-body>' +
+                '<modal-footer></modal-footer>' +
+                '</div>');
+
+        var $compile = $injector.get('$compile');
+        scope = $rootScope.$new();
+        scope.dialog = dialogService.create('info', {
+            controller: {
+                myData: 'myData'
+            }
+        });
+        scope.dialog.open();
+
+        element = angular.element('<div class="dc-modal {{dialog.className}}"' +
+            'id="{{ dialog.name }}" dc-modal modal-id="dialog.id">' +
+            '<div>' +
+            '<div class="dc-modal-content" ng-include ' +
+            'src="dialog.template" ng-controller="dialog.controller">' +
+            '</div>' +
+            '</div></div>');
+        $compile(element)(scope);
+    }));
+
+    it('should have compile a directive', function () {
+        scope.$digest();
+        expect(element.isolateScope).toBeDefined();
+        expect(element.isolateScope().modalId).toBe(1);
+
+        $httpBackend.flush();
+    });
+
+    it('should create modal directive with template', function (done) {
+        scope.$digest();
+        $httpBackend.flush();
+
+        expect(element.find('modal-header')[0]).toBeDefined();
+        expect(element.find('modal-body')[0]).toBeDefined();
+        expect(element.find('modal-footer')[0]).toBeDefined();
+    });
+});
+
