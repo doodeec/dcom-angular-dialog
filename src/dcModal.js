@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('dcModal', [])
-    .service('dialogService',
+    .factory('dialogService',
         ['$q', '$http', '$templateCache', '$timeout',
             function dialogProvider($q, $http, $templateCache, $timeout) {
                 var count = 0,

@@ -143,7 +143,6 @@ describe('Modal:: modal directive', function () {
 
     var dialogService,
         $httpBackend,
-        $timeout,
         $rootScope,
         scope,
         element;
@@ -151,11 +150,10 @@ describe('Modal:: modal directive', function () {
     beforeEach(inject(function ($injector) {
         $rootScope = $injector.get('$rootScope');
         $httpBackend = $injector.get('$httpBackend');
-        $timeout = $injector.get('$timeout');
         dialogService = $injector.get('dialogService');
 
         $httpBackend.expectGET('templates/info.html')
-            .respond('<div><modal-header></modal-header>' +
+            .respond('<div><modal-header>{{ myData }}</modal-header>' +
                 '<modal-body></modal-body>' +
                 '<modal-footer></modal-footer>' +
                 '</div>');
@@ -164,27 +162,37 @@ describe('Modal:: modal directive', function () {
         scope = $rootScope.$new();
         scope.dialog = dialogService.create('info', {
             controller: {
-                myData: 'myData'
+                myData: 'My new Data',
+                customFn: function() {
+                    return 'custom'
+                }
             }
         });
-        scope.dialog.open();
 
         element = angular.element('<div class="dc-modal {{dialog.className}}"' +
             'id="{{ dialog.name }}" dc-modal modal-id="dialog.id">' +
             '<div>' +
-            '<div class="dc-modal-content" ng-include ' +
+            '<modal-content ng-include ' +
             'src="dialog.template" ng-controller="dialog.controller">' +
-            '</div>' +
+            '</modal-content>' +
             '</div></div>');
         $compile(element)(scope);
     }));
 
-    it('should have compile a directive', function () {
+    it('should create isolated scope', function () {
         scope.$digest();
         expect(element.isolateScope).toBeDefined();
         expect(element.isolateScope().modalId).toBe(1);
 
         $httpBackend.flush();
+    });
+
+    it('should create show and hide method', function (done) {
+        scope.$digest();
+        $httpBackend.flush();
+
+        expect(scope.dialog.show).toBeDefined();
+        expect(scope.dialog.hide).toBeDefined();
     });
 
     it('should create modal directive with template', function (done) {
@@ -194,6 +202,17 @@ describe('Modal:: modal directive', function () {
         expect(element.find('modal-header')[0]).toBeDefined();
         expect(element.find('modal-body')[0]).toBeDefined();
         expect(element.find('modal-footer')[0]).toBeDefined();
+    });
+
+    it('should have controller defined', function (done) {
+        scope.$digest();
+        $httpBackend.flush();
+        var modalScope = element.find('modal-content').scope();
+
+        expect(modalScope).toBeDefined();
+        expect(modalScope.myData).toBe('My new Data');
+        expect(modalScope.customFn).toBeDefined();
+        expect(modalScope.customFn()).toBe('custom');
     });
 });
 
