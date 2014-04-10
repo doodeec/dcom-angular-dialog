@@ -4,6 +4,7 @@
     "angular": "1.2.14",
     "json3": "~3.2.4",
     "es5-shim": "~2.0.8",
-    "angular-mocks": "~1.2.14"
+    "angular-mocks": "1.2.14",
+    "bootstrap": "~3.0.0"
   }
 }
