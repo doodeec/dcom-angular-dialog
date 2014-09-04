@@ -49,6 +49,7 @@ angular.module('dcModal', [])
                     this.className = null;
                     this.animate = true;
 
+                    this._openDefer = null;
                     this._persistent = false;
                     this._backdropDisabled = false;
                     this._ready = false;
@@ -133,33 +134,36 @@ angular.module('dcModal', [])
                 DcomDialog.prototype.open = function (e) {
                     e && e.preventDefault();
 
-                    var openDefer = $q.defer(),
-                        that = this,
-                        openedIndex = openedModals.indexOf(this.id);
+                    if (this._openDefer === null) {
+                        this._openDefer = $q.defer();
+                        var that = this,
+                            openedIndex = openedModals.indexOf(this.id);
 
-                    var openFunction = function () {
-                        openedModals.unshift(that.id);
-                        that.show();
-                        openDefer.resolve();
-                        that.callStackArray('open');
-                    };
+                        var openFunction = function () {
+                            openedModals.unshift(that.id);
+                            that.show();
+                            that._openDefer.resolve();
+                            that.callStackArray('open');
+                            that._openDefer = null;
+                        };
 
-                    if (allModals.indexOf(this) === -1) {
-                        openDefer.reject();
-                        throw new Error('Dialog does not exist');
-                    } else if (!this._ready) {
-                        //if dialog is ready, open Modal, else register onReady stack
-                        this.on('ready', openFunction);
-                    } else if (openedIndex !== -1) {
-                        if (openedIndex !== 0) {
-                            openedModals.splice(openedIndex, 1);
-                            openedModals.unshift(this.id);
+                        if (allModals.indexOf(this) === -1) {
+                            this._openDefer.reject();
+                            throw new Error('Dialog does not exist');
+                        } else if (!this._ready) {
+                            //if dialog is ready, open Modal, else register onReady stack
+                            this.on('ready', openFunction);
+                        } else if (openedIndex !== -1) {
+                            if (openedIndex !== 0) {
+                                openedModals.splice(openedIndex, 1);
+                                openedModals.unshift(this.id);
+                            }
+                        } else {
+                            openFunction();
                         }
-                    } else {
-                        openFunction();
                     }
 
-                    return openDefer.promise;
+                    return this._openDefer.promise;
                 };
 
                 /**
