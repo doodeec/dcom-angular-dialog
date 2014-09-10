@@ -159,7 +159,7 @@ angular.module('dcModal', [])
                                 openedModals.unshift(this.id);
                             }
                         } else {
-                            openFunction();
+                            $timeout(openFunction);
                         }
                     }
 
