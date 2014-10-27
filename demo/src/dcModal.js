@@ -65,7 +65,9 @@ angular.module('dcModal', [])
                         if (angular.isObject(options.controller)) {
                             var ctrlFn = function ($scope) {
                                 for (var prop in options.controller) {
-                                    $scope[prop] = options.controller[prop]
+                                    if (options.controller.hasOwnProperty(prop)) {
+                                        $scope[prop] = options.controller[prop];
+                                    }
                                 }
 
                                 dialog.$scope = $scope;
@@ -212,7 +214,7 @@ angular.module('dcModal', [])
                 DcomDialog.prototype.on = function (event, fn) {
                     if (!fn || !event || !angular.isFunction(fn)) return;
 
-                    if (event in this._callStack) {
+                    if (this._callStack.hasOwnProperty(event)) {
                         if (this._callStack[event].indexOf(fn) === -1) this._callStack[event].push(fn);
                     }
                 };
