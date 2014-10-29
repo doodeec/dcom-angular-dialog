@@ -2,7 +2,7 @@
 [doodeec.com](http://doodeec.com)
 
 ##Version
-0.9.0
+0.9.2
 
 ##Description
 This is a dialog module for angular, which uses Bootstrap 3 modals style.
