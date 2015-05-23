@@ -1,7 +1,7 @@
-'use strict';
+"use strict";
 
-angular.module('angularModalDemo', ['dcModal']);
+angular.module("angularModalDemo", ["dcModal"]);
 
 angular.element(document).ready(function() {
-    angular.bootstrap(document, ['angularModalDemo']);
+    angular.bootstrap(document, ["angularModalDemo"]);
 });

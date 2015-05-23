@@ -1,55 +1,66 @@
-'use strict';
+"use strict";
 
-angular.module('angularModalDemo')
-  .controller('MainCtrl',
-    ['$scope','dialogService','$timeout',
-        function ($scope, dialogService, $timeout) {
+angular.module("angularModalDemo")
+    .controller("MainCtrl",
+    ["$scope", "DialogService", "$timeout",
+        function ($scope, DialogService, $timeout) {
 
-            $scope.oneDialog = function() {
-                var dialog = dialogService.create('error');
-                dialog.open();
+            DialogService.setDefaultTemplate("<div><div class=\"dc-modal-body\">This is set from " +
+                "the controller - {{message}}</div></div>");
+
+            $scope.oneDialog = function (e) {
+                var dialog = DialogService.get("error", {
+                    controller: {
+                        message: "Using default dialog template"
+                    }
+                });
+                dialog.open(e);
             };
 
-            $scope.twoDialogs = function() {
+            $scope.twoDialogs = function (e) {
                 var firstDialogOptions = {
-                    className: 'info',
-                    backdrop: false
+                    className: "info",
+                    backdrop: false,
+                    template: "templates/info.html"
                 };
-                var firstDialog = dialogService.create('info',firstDialogOptions);
-                firstDialog.open();
+                var firstDialog = DialogService.get("info", firstDialogOptions);
+                firstDialog.open(e);
 
-                $timeout(function() {
-                    var secondDialog = dialogService.create('error');
-                    secondDialog.open();
-                },200);
+                $timeout(function () {
+                    var secondDialog = DialogService.get("error", {
+                        template: "templates/error.html"
+                    });
+                    secondDialog.open(e);
+                }, 200);
             };
 
-            $scope.ctrlDialog = function() {
+            $scope.ctrlDialog = function (e) {
                 var options = {
-                    className: 'ctrlDialog',
+                    className: "ctrlDialog",
+                    template: "templates/ctrl.html",
                     controller: {
                         message: "This is dialog message injected from code",
-                        magicButton: function() {
+                        magicButton: function () {
                             this.message = "Whoa, message has changed";
                         }
                     },
                     animate: false
                 };
 
-                var dialog = dialogService.create('ctrl',options);
-                dialog.open();
+                var dialog = DialogService.get("ctrl", options);
+                dialog.open(e);
             };
 
-            $scope.ctrlDialog2 = function() {
+            $scope.ctrlDialog2 = function (e) {
                 var options = {
-                    className: 'ctrlDialog',
-                    controller: function($scope) {
-                        $scope.message = 'This is message injected to the scope via' +
-                            'modal options.';
+                    className: "ctrlDialog",
+                    template: "templates/ctrl.html",
+                    controller: function ($scope) {
+                        $scope.message = "This is message injected to the scope via modal options.";
                     }
                 };
 
-                var dialog = dialogService.create('ctrl',options);
-                dialog.open();
+                var dialog = DialogService.get("ctrl", options);
+                dialog.open(e);
             };
-  }]);
+        }]);

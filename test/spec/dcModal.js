@@ -1,6 +1,6 @@
 'use strict';
 
-describe('Modal:: dialogService', function () {
+describe('Modal:: DialogService', function () {
 
     beforeEach(module('dcModal'));
 
@@ -9,35 +9,34 @@ describe('Modal:: dialogService', function () {
         $timeout;
 
     beforeEach(inject(function ($injector) {
-        dialogService = $injector.get('dialogService');
+        dialogService = $injector.get('DialogService');
         $httpBackend = $injector.get('$httpBackend');
         $timeout = $injector.get('$timeout');
     }));
 
     it('should have all methods and getters defined', function () {
-        expect(dialogService.create).toBeDefined();
         expect(dialogService.get).toBeDefined();
-        expect(dialogService.getById).toBeDefined();
+        expect(dialogService.findById).toBeDefined();
         expect(dialogService.allModals).toBeDefined();
         expect(dialogService.openedModals).toBeDefined();
     });
 
     it('should create modals', function () {
-        var first_modal = dialogService.create('error');
+        var first_modal = dialogService.get('error');
         expect(first_modal.id).toBe(1);
         expect(dialogService.allModals.length).toBe(1);
 
-        var second_modal = dialogService.create('error');
-        expect(second_modal.id).toBe(2);
-        expect(dialogService.allModals.length).toBe(2);
+        var second_modal = dialogService.get('error');
+        expect(second_modal.id).toBe(1);
+        expect(dialogService.allModals.length).toBe(1);
 
-        var third_modal = dialogService.create('error');
-        expect(third_modal.id).toBe(3);
-        expect(dialogService.allModals.length).toBe(3);
+        var third_modal = dialogService.get('error');
+        expect(third_modal.id).toBe(1);
+        expect(dialogService.allModals.length).toBe(1);
     });
 
     it('should destroy modal', function () {
-        dialogService.create('error').close();
+        dialogService.get('error').close();
 
         $timeout(function () {
             expect(dialogService.allModals.length).toBe(0);
@@ -45,45 +44,33 @@ describe('Modal:: dialogService', function () {
     });
 
     it('should open modal', function () {
-        $httpBackend.expectGET('templates/error')
-            .respond('<div></div>');
-        $httpBackend.expectGET('templates/info')
-            .respond('<div></div>');
-        $httpBackend.expectGET('templates/warn')
-            .respond('<div></div>');
-
-        dialogService.create('error').open();
+        dialogService.get('error').open();
         $timeout(function () {
             expect(dialogService.openedModals.length).toBe(1);
         });
 
-        dialogService.create('info');
+        dialogService.get('info');
         dialogService.get('info').open();
         $timeout(function () {
             expect(dialogService.openedModals.length).toBe(2);
         });
 
-        dialogService.create('warn');
-        dialogService.getById(3).open();
+        dialogService.get('warn');
+        dialogService.findById(3).open();
         $timeout(function () {
             expect(dialogService.openedModals.length).toBe(3);
         });
     });
 
     it('should close opened modal', function () {
-        $httpBackend.expectGET('templates/error')
-            .respond('<div></div>');
-        $httpBackend.expectGET('templates/info')
-            .respond('<div></div>');
-
-        var modal = dialogService.create('error');
+        var modal = dialogService.get('error');
         modal.open();
         $timeout(function () {
             modal.close();
             expect(dialogService.openedModals.length).toBe(0);
         });
 
-        dialogService.create('info', {animate: false}).open();
+        dialogService.get('info', {animate: false}).open();
         $timeout(function () {
             expect(dialogService.openedModals.length).toBe(1);
             //fake ESC keyup event
@@ -98,10 +85,7 @@ describe('Modal:: dialogService', function () {
     });
 
     it('should be called once modal is opened', function () {
-        $httpBackend.expectGET('templates/error')
-            .respond('<div></div>');
-
-        var modal = dialogService.create('error'),
+        var modal = dialogService.get('error'),
             array = [];
         modal.on('open', function () {
             array.push(1);
@@ -114,10 +98,7 @@ describe('Modal:: dialogService', function () {
     });
 
     it('should be called once modal is destroyed', function () {
-        $httpBackend.expectGET('templates/error')
-            .respond('<div></div>');
-
-        var modal = dialogService.create('error', {animate: false}),
+        var modal = dialogService.get('error', {animate: false}),
             array = [];
         modal.on('destroy', function () {
             array.push(1);
@@ -150,17 +131,11 @@ describe('Modal:: modal directive', function () {
     beforeEach(inject(function ($injector) {
         $rootScope = $injector.get('$rootScope');
         $httpBackend = $injector.get('$httpBackend');
-        dialogService = $injector.get('dialogService');
-
-        $httpBackend.expectGET('templates/info.html')
-            .respond('<div><modal-header>{{ myData }}</modal-header>' +
-                '<modal-body></modal-body>' +
-                '<modal-footer></modal-footer>' +
-                '</div>');
+        dialogService = $injector.get('DialogService');
 
         var $compile = $injector.get('$compile');
         scope = $rootScope.$new();
-        scope.dialog = dialogService.create('info', {
+        scope.dialog = dialogService.get('info', {
             controller: {
                 myData: 'My new Data',
                 customFn: function() {
@@ -183,30 +158,17 @@ describe('Modal:: modal directive', function () {
         scope.$digest();
         expect(element.isolateScope).toBeDefined();
         expect(element.isolateScope().modalId).toBe(1);
-
-        $httpBackend.flush();
     });
 
-    it('should create show and hide method', function (done) {
+    it('should create show and hide method', function () {
         scope.$digest();
-        $httpBackend.flush();
 
         expect(scope.dialog.show).toBeDefined();
         expect(scope.dialog.hide).toBeDefined();
     });
 
-    it('should create modal directive with template', function (done) {
+    it('should have controller defined', function () {
         scope.$digest();
-        $httpBackend.flush();
-
-        expect(element.find('modal-header')[0]).toBeDefined();
-        expect(element.find('modal-body')[0]).toBeDefined();
-        expect(element.find('modal-footer')[0]).toBeDefined();
-    });
-
-    it('should have controller defined', function (done) {
-        scope.$digest();
-        $httpBackend.flush();
         var modalScope = element.find('modal-content').scope();
 
         expect(modalScope).toBeDefined();

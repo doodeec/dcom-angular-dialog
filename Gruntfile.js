@@ -12,8 +12,8 @@ module.exports = function (grunt) {
     };
 
     try {
-        yeomanConfig.app = require('./bower.json').appPath || 'demo';
-        yeomanConfig.appName = require('./bower.json').name;
+        yeomanConfig.app = require('./package.json').appPath || 'demo';
+        yeomanConfig.appName = require('./package.json').name;
         yeomanConfig.appVersion = require('./package.json').version;
     } catch (e) {
     }
@@ -26,7 +26,7 @@ module.exports = function (grunt) {
                     {
                         expand: true,
                         cwd: 'demo/src/',
-                        dest: 'src',
+                        dest: 'library',
                         src: '*.{css,js}'
                     }
                 ]
@@ -35,14 +35,14 @@ module.exports = function (grunt) {
         uglify: {
             dist: {
                 files: {
-                    'src/<%= yeoman.appName %>-<%= yeoman.appVersion %>.min.js': ['src/dcModal.js']
+                    'src/<%= yeoman.appName %>-<%= yeoman.appVersion %>.min.js': ['library/dcModal.js']
                 }
             }
         },
         cssmin: {
             minify: {
                 files: {
-                    'src/<%= yeoman.appName %>-<%= yeoman.appVersion %>.min.css': ['src/dcModal.css']
+                    'src/<%= yeoman.appName %>-<%= yeoman.appVersion %>.min.css': ['library/dcModal.css']
                 }
             }
         },
