@@ -1,0 +1,12 @@
+<div class="dc-modal {{dialog.className}}" aria-hidden="true" tabindex="-1"
+     ng-repeat="dialog in allModals" id="{{dialog.name}}"
+     ng-class="{'top-modal': dialog.id == openedModals[0], 'animated-modal': dialog.animate}"
+     dc-modal modal-id="dialog.id">
+
+    <div class="dc-modal-dialog">
+        <div class="dc-modal-content" ng-include src="dialog.template" ng-controller="dialog.controller"></div>
+    </div>
+
+</div>
+
+<div dc-backdrop class="dc-modal-backdrop" ng-class="{'shown': openedModals.length}"></div>

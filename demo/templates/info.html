@@ -9,7 +9,7 @@
         <p>So it should be visible under error dialog when opened.</p>
     </div>
     <div class="dc-modal-footer">
-        <button class="btn btn-info" ng-click="dialog.close()">Cancel</button>
-        <button class="btn submit" ng-click="dialog.close()">OK</button>
+        <button class="btn btn-info" ng-click="dialog.destroy($event)">Cancel</button>
+        <button class="btn submit" ng-click="dialog.dismiss($event)">OK</button>
     </div>
 </div>
